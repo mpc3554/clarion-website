@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarion | AI-Powered Customer Onboarding Platform</title>
+    <link rel="icon" type="image/png" href="https://outbound-playbook-lovat.vercel.app/clarion-logo.png">
+    <link rel="apple-touch-icon" href="https://outbound-playbook-lovat.vercel.app/clarion-logo.png">
+    <meta name="description" content="Clarion replaces spreadsheets and Notion with an AI-powered onboarding platform that adapts the journey to each customer. Trusted by 40+ B2B SaaS companies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           DESIGN TOKENS
+           ============================================ */
+        :root {
+            --color-ink: #0B1222;
+            --color-ink-secondary: #3D4A5C;
+            --color-ink-muted: #6B7589;
+            --color-surface: #FFFFFF;
+            --color-surface-alt: #F4F6F9;
+            --color-surface-dark: #0B1222;
+            --color-surface-dark-alt: #111B2E;
+            --color-accent: #3B6CEB;
+            --color-accent-hover: #2B55C7;
+            --color-accent-warm: #E8943A;
+            --color-accent-teal: #1AAFA0;
+            --color-border: #DFE3EA;
+            --color-border-light: #EBEEF3;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --max-width: 1140px;
+            --section-padding: 100px 0;
+            --section-padding-mobile: 64px 0;
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-ink);
+            line-height: 1.6;
+            background: var(--color-surface);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--color-ink-secondary);
+        }
+
+        /* ============================================
+           IMAGE PLACEHOLDERS
+           ============================================ */
+        .img-placeholder {
+            background: var(--color-surface-alt);
+            border: 2px dashed var(--color-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-ink-muted);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .img-placeholder--dark {
+            background: var(--color-surface-dark-alt);
+            border-color: #2A3548;
+            color: #5A6B82;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 14px 28px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn--primary {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .btn--primary:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn--secondary {
+            background: transparent;
+            color: var(--color-ink);
+            border: 1.5px solid var(--color-border);
+        }
+
+        .btn--secondary:hover {
+            border-color: var(--color-ink);
+        }
+
+        .btn--secondary-light {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.25);
+        }
+
+        .btn--secondary-light:hover {
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .btn--white {
+            background: white;
+            color: var(--color-ink);
+        }
+
+        .btn--white:hover {
+            background: #F0F2F5;
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           DEMO BANNER
+           ============================================ */
+        .demo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 101;
+            background: #FEF9E7;
+            border-bottom: 2px solid #E8C84A;
+            padding: 10px 0;
+        }
+
+        .demo-banner__inner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #4A4118;
+            line-height: 1.4;
+        }
+
+        .demo-banner__badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #3B6CEB;
+            color: white;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .demo-banner__text strong {
+            font-weight: 600;
+            color: #2D2810;
+        }
+
+        .demo-banner__text a {
+            color: #3B6CEB;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .demo-banner__text a:hover {
+            color: #2B55C7;
+        }
+
+        /* ============================================
+           NAV
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 42px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .nav__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+
+        .nav__logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav__logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .nav__links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav__links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-ink-secondary);
+            transition: color 0.2s;
+        }
+
+        .nav__links a:hover {
+            color: var(--color-ink);
+        }
+
+        .nav__cta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav__cta a.login {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-ink-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .nav__links { display: none; }
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            padding: 200px 0 100px;
+            background: var(--color-surface);
+        }
+
+        .hero__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero__content h1 {
+            margin-bottom: 20px;
+        }
+
+        .hero__content p {
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+            max-width: 520px;
+        }
+
+        .hero__actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .hero__proof {
+            font-size: 0.85rem;
+            color: var(--color-ink-muted);
+        }
+
+        .hero__image .img-placeholder {
+            height: 420px;
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 160px 0 64px; }
+            .hero__inner { grid-template-columns: 1fr; gap: 40px; }
+            .hero__image .img-placeholder { height: 280px; }
+        }
+
+        /* ============================================
+           LOGO BAR
+           ============================================ */
+        .logos {
+            padding: 48px 0;
+            border-top: 1px solid var(--color-border-light);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .logos__label {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-ink-muted);
+            margin-bottom: 28px;
+        }
+
+        .logos__grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .logos__grid .img-placeholder {
+            width: 110px;
+            height: 36px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            border: 1.5px dashed var(--color-border);
+        }
+
+        /* ============================================
+           PROBLEM SECTION
+           ============================================ */
+        .problem {
+            padding: var(--section-padding);
+            background: var(--color-surface);
+        }
+
+        .problem__header {
+            max-width: 680px;
+            margin-bottom: 56px;
+        }
+
+        .problem__header h2 {
+            margin-bottom: 20px;
+        }
+
+        .problem__header p {
+            font-size: 1.1rem;
+        }
+
+        .problem__cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .problem__card {
+            background: var(--color-surface-alt);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--color-border-light);
+        }
+
+        .problem__card h4 {
+            margin-bottom: 12px;
+            color: var(--color-ink);
+        }
+
+        .problem__card p {
+            font-size: 0.95rem;
+        }
+
+        .problem__card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #FEE9E9;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .problem { padding: var(--section-padding-mobile); }
+            .problem__cards { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           SOLUTION INTRO
+           ============================================ */
+        .solution-intro {
+            padding: var(--section-padding);
+            background: var(--color-surface-dark);
+            color: white;
+        }
+
+        .solution-intro__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .solution-intro h2 {
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .solution-intro p {
+            color: rgba(255,255,255,0.72);
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .solution-intro p:last-of-type {
+            color: var(--color-accent-teal);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.15rem;
+        }
+
+        .solution-intro .img-placeholder {
+            height: 380px;
+        }
+
+        @media (max-width: 768px) {
+            .solution-intro { padding: var(--section-padding-mobile); }
+            .solution-intro__inner { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           CAPABILITIES
+           ============================================ */
+        .capabilities {
+            padding: var(--section-padding);
+            background: var(--color-surface);
+        }
+
+        .capabilities__header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 72px;
+        }
+
+        .capabilities__header h2 {
+            margin-bottom: 8px;
+        }
+
+        .capability {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .capability:nth-child(even) {
+            direction: rtl;
+        }
+
+        .capability:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .capability:last-child {
+            margin-bottom: 0;
+        }
+
+        .capability__eyebrow {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+        }
+
+        .capability__content h3 {
+            margin-bottom: 16px;
+            font-size: 1.6rem;
+        }
+
+        .capability__content p {
+            margin-bottom: 16px;
+        }
+
+        .capability__feature {
+            background: var(--color-surface-alt);
+            border-left: 3px solid var(--color-accent);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 16px;
+        }
+
+        .capability__feature p {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-ink);
+            margin: 0;
+        }
+
+        .capability__proof {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-accent-teal);
+            font-family: var(--font-display);
+        }
+
+        .capability__image .img-placeholder {
+            height: 360px;
+        }
+
+        @media (max-width: 768px) {
+            .capabilities { padding: var(--section-padding-mobile); }
+            .capability { grid-template-columns: 1fr; gap: 32px; margin-bottom: 56px; }
+            .capability:nth-child(even) { direction: ltr; }
+            .capability__image .img-placeholder { height: 240px; }
+        }
+
+        /* ============================================
+           METRICS
+           ============================================ */
+        .metrics {
+            padding: var(--section-padding);
+            background: var(--color-surface-dark);
+            color: white;
+        }
+
+        .metrics__header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .metrics__header h2 {
+            color: white;
+        }
+
+        .metrics__grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .metric__card {
+            text-align: center;
+            padding: 32px 16px;
+            background: var(--color-surface-dark-alt);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .metric__number {
+            font-family: var(--font-display);
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--color-accent-teal);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric__label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.4;
+        }
+
+        .metric__source {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 8px;
+        }
+
+        .metrics__averages {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .metrics { padding: var(--section-padding-mobile); }
+            .metrics__grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ============================================
+           HOW IT WORKS
+           ============================================ */
+        .how-it-works {
+            padding: var(--section-padding);
+            background: var(--color-surface);
+        }
+
+        .how-it-works__header {
+            max-width: 560px;
+            margin-bottom: 56px;
+        }
+
+        .how-it-works__header h2 {
+            margin-bottom: 12px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .step {
+            padding: 32px;
+            background: var(--color-surface-alt);
+            border-radius: 12px;
+            border: 1px solid var(--color-border-light);
+        }
+
+        .step__number {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .step h4 {
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .how-it-works { padding: var(--section-padding-mobile); }
+            .steps { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials {
+            padding: var(--section-padding);
+            background: var(--color-surface-alt);
+        }
+
+        .testimonials__grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .testimonial {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 40px;
+            border: 1px solid var(--color-border-light);
+        }
+
+        .testimonial__quote {
+            font-size: 1.05rem;
+            color: var(--color-ink);
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .testimonial__author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial__avatar .img-placeholder {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 0.55rem;
+        }
+
+        .testimonial__name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-ink);
+        }
+
+        .testimonial__title {
+            font-size: 0.8rem;
+            color: var(--color-ink-muted);
+        }
+
+        @media (max-width: 768px) {
+            .testimonials { padding: var(--section-padding-mobile); }
+            .testimonials__grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           PERSONAS
+           ============================================ */
+        .personas {
+            padding: var(--section-padding);
+            background: var(--color-surface);
+        }
+
+        .personas__header {
+            max-width: 600px;
+            margin-bottom: 56px;
+        }
+
+        .personas__header h2 {
+            margin-bottom: 12px;
+        }
+
+        .personas__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .persona-card {
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--color-border-light);
+            background: var(--color-surface);
+        }
+
+        .persona-card__role {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: var(--color-ink);
+        }
+
+        .persona-card p {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .personas { padding: var(--section-padding-mobile); }
+            .personas__grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           POSITIONING
+           ============================================ */
+        .positioning {
+            padding: var(--section-padding);
+            background: var(--color-surface-alt);
+        }
+
+        .positioning__header {
+            max-width: 600px;
+            margin-bottom: 56px;
+        }
+
+        .positioning__header h2 {
+            margin-bottom: 16px;
+        }
+
+        .positioning__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .positioning__card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--color-border-light);
+        }
+
+        .positioning__vs {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-accent);
+            margin-bottom: 12px;
+        }
+
+        .positioning__card h4 {
+            margin-bottom: 12px;
+        }
+
+        .positioning__card p {
+            font-size: 0.93rem;
+        }
+
+        @media (max-width: 768px) {
+            .positioning { padding: var(--section-padding-mobile); }
+            .positioning__grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           INTEGRATIONS
+           ============================================ */
+        .integrations {
+            padding: var(--section-padding);
+            background: var(--color-surface);
+            text-align: center;
+        }
+
+        .integrations h2 {
+            margin-bottom: 12px;
+        }
+
+        .integrations > .container > p {
+            margin-bottom: 48px;
+        }
+
+        .integrations__grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .integrations__grid .img-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+        }
+
+        .integrations__note {
+            font-size: 0.85rem;
+            color: var(--color-ink-muted);
+        }
+
+        /* ============================================
+           TRUST
+           ============================================ */
+        .trust {
+            padding: 48px 0;
+            border-top: 1px solid var(--color-border-light);
+            background: var(--color-surface);
+        }
+
+        .trust__inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .trust__badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-ink-muted);
+        }
+
+        .trust__badge-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--color-surface-alt);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           FINAL CTA
+           ============================================ */
+        .final-cta {
+            padding: var(--section-padding);
+            background: var(--color-surface-dark);
+            color: white;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            color: rgba(255,255,255,0.65);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto 32px;
+        }
+
+        .final-cta__note {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 16px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 48px 0;
+            background: var(--color-surface-dark);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.45);
+        }
+
+        .footer__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer__logo img {
+            height: 24px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .footer__links a {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            transition: color 0.2s;
+        }
+
+        .footer__links a:hover {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .footer__meta {
+            font-size: 0.75rem;
+            width: 100%;
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         DEMO BANNER
+         ========================================== -->
+    <div class="demo-banner">
+        <div class="container demo-banner__inner">
+            <span class="demo-banner__badge">Demo</span>
+            <span class="demo-banner__text"><strong>This playbook is built on a fictional company.</strong> Some sections may be incomplete. Customers receive a fully bespoke playbook. <a href="https://yellowo.co.uk" target="_blank">Learn more at yellowo.co.uk</a></span>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NAV
+         ========================================== -->
+    <nav class="nav">
+        <div class="container nav__inner">
+            <a href="#" class="nav__logo"><img src="https://outbound-playbook-lovat.vercel.app/clarion-logo.png" alt="Clarion"></a>
+            <ul class="nav__links">
+                <li><a href="#product">Product</a></li>
+                <li><a href="#customers">Customers</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#resources">Resources</a></li>
+            </ul>
+            <div class="nav__cta">
+                <a href="#" class="login">Login</a>
+                <a href="#demo" class="btn btn--primary">Book a Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         HERO
+         ========================================== -->
+    <section class="hero">
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <h1>Customer onboarding that adapts to every customer.</h1>
+                <p>Clarion replaces the spreadsheets and Notion docs your CS team is holding together with an AI-powered onboarding platform that builds a different journey for every customer, flags when someone stalls, and tells your team exactly what to do next.</p>
+                <div class="hero__actions">
+                    <a href="#demo" class="btn btn--primary">Book a Demo</a>
+                    <a href="#" class="btn btn--secondary">Watch it work</a>
+                </div>
+                <p class="hero__proof">Trusted by 40+ B2B SaaS companies. Live in under two weeks.</p>
+            </div>
+            <div class="hero__image">
+                <img src="https://yellowo.co.uk/wp-content/uploads/2026/07/main-onboarding-dashboard.png" alt="Clarion onboarding dashboard showing customer progress, risk signals, and team assignments" style="width:100%; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         LOGO BAR
+         ========================================== -->
+    <section class="logos">
+        <div class="container">
+            <p class="logos__label">Trusted by CS teams at</p>
+            <div class="logos__grid">
+                <div class="img-placeholder">Paysure</div>
+                <div class="img-placeholder">Kova</div>
+                <div class="img-placeholder">Ledgr</div>
+                <div class="img-placeholder">Stacklane</div>
+                <div class="img-placeholder">Shieldlane</div>
+                <div class="img-placeholder">PeopleLayer</div>
+                <div class="img-placeholder">Infrascope</div>
+                <div class="img-placeholder">Prospr</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PROBLEM
+         ========================================== -->
+    <section class="problem">
+        <div class="container">
+            <div class="problem__header">
+                <h2>You built your onboarding process at 15 customers. You've got 100 now.</h2>
+                <p>Most B2B SaaS companies treat onboarding as a project: a finite set of tasks to complete. That works when you have 10 customers and a hands-on CS team. It falls apart at 50, 100, 200 customers. The onboarding "project" becomes a bottleneck: customers stall, CS reps firefight, time-to-value stretches, and churn creeps in during the first 90 days.</p>
+                <p style="margin-top: 12px; font-weight: 600; color: var(--color-ink);">The worst part? You can't see it happening until it's too late.</p>
+            </div>
+            <div class="problem__cards">
+                <div class="problem__card">
+                    <div class="problem__card-icon">&#128683;</div>
+                    <h4>No visibility</h4>
+                    <p>You find out a customer is stuck when they complain or fail to renew. Your CS team tracks onboarding in spreadsheets and finds out about problems in weekly reviews, not in real time. By the time it surfaces, the customer has already mentally checked out.</p>
+                </div>
+                <div class="problem__card">
+                    <div class="problem__card-icon">&#128203;</div>
+                    <h4>Every customer gets the same checklist</h4>
+                    <p>A 20-person startup and a 500-person enterprise go through the same onboarding. Your smaller customers feel overwhelmed. Your bigger customers feel underserved. Neither gets to value as fast as they should.</p>
+                </div>
+                <div class="problem__card">
+                    <div class="problem__card-icon">&#9200;</div>
+                    <h4>CS reps are drowning in admin</h4>
+                    <p>Your team spends more time updating trackers, sending reminder emails, and chasing stakeholders than actually helping customers succeed. And when something goes wrong, they're guessing at the fix rather than following a proven response.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SOLUTION INTRO
+         ========================================== -->
+    <section class="solution-intro">
+        <div class="container solution-intro__inner">
+            <div class="solution-intro__content">
+                <h2>Onboarding isn't a project. It's a product.</h2>
+                <p>Onboarding should adapt to each customer the way the product itself does, using data about how that specific customer is engaging, not a generic playbook applied to everyone.</p>
+                <p>Clarion is a customer onboarding platform built for B2B SaaS companies. It connects to your CRM, pulls in customer data, and does three things that spreadsheets and Notion never will: it builds a different onboarding journey for every customer, it tells your CS team when something is going wrong, and it recommends exactly what to do about it.</p>
+                <p>Live in under two weeks. Not months.</p>
+            </div>
+            <div class="solution-intro__image">
+                <img src="https://yellowo.co.uk/wp-content/uploads/2026/07/adaptive-onboarding-plan.png" alt="Clarion adaptive onboarding plan with AI-generated milestones adjusting based on customer engagement" style="width:100%; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.25);">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         CAPABILITIES
+         ========================================== -->
+    <section id="product" class="capabilities">
+        <div class="container">
+            <div class="capabilities__header">
+                <h2>One platform. Three capabilities.</h2>
+                <p style="color: var(--color-ink-muted);">Zero spreadsheets.</p>
+            </div>
+
+            <!-- Capability 1: Dynamic Onboarding Plans -->
+            <div class="capability">
+                <div class="capability__content">
+                    <p class="capability__eyebrow">Dynamic Onboarding Plans</p>
+                    <h3>Every customer gets their own journey.</h3>
+                    <p>Clarion generates AI-powered onboarding plans that adapt based on the customer's segment, product usage, and engagement patterns. This isn't a template you pick from a dropdown. The plan changes as the customer progresses or stalls, pulling from patterns across your entire customer base.</p>
+                    <p>A mid-market customer on a standard plan gets a streamlined path. An enterprise customer with complex integrations gets a high-touch journey with different milestones. The journey itself is intelligent.</p>
+                    <div class="capability__feature">
+                        <p>AI-driven personalisation learned from patterns across your customer base. Not rule-based "if X then Y" logic.</p>
+                    </div>
+                    <p class="capability__proof">Kova improved onboarding completion from 34% to 91%.</p>
+                </div>
+                <div class="capability__image">
+                    <img src="https://yellowo.co.uk/wp-content/uploads/2026/07/Dynamic-Onboarding-Plans.png" alt="Clarion dynamic onboarding plans showing personalised journeys for different customer segments" style="width:100%; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+
+            <!-- Capability 2: Adoption Tracking & Risk Signals -->
+            <div class="capability">
+                <div class="capability__content">
+                    <p class="capability__eyebrow">Adoption Tracking & Risk Signals</p>
+                    <h3>See every customer in real time. Catch problems before they surface.</h3>
+                    <p>One dashboard shows every customer, where they are in onboarding, and whether they're on track. Clarion pulls data from your product and integrations to build a real-time picture without relying on the CS rep to manually update a spreadsheet.</p>
+                    <p>When a customer stalls (missed milestones, low engagement, delayed go-live), Clarion flags it automatically. Your team finds out when there's still time to intervene, not when the customer's already gone quiet.</p>
+                    <div class="capability__feature">
+                        <p>Automated risk signals that catch stalling customers an average of 11 days earlier than manual tracking.</p>
+                    </div>
+                    <p class="capability__proof">Stacklane saw first-90-day churn drop from 18% to 6%.</p>
+                </div>
+                <div class="capability__image">
+                    <img src="https://yellowo.co.uk/wp-content/uploads/2026/07/Adoption-Tracking-Risk-Signals.png" alt="Clarion risk signal dashboard showing flagged accounts and automated alerts" style="width:100%; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+
+            <!-- Capability 3: CS Team Playbooks -->
+            <div class="capability">
+                <div class="capability__content">
+                    <p class="capability__eyebrow">CS Team Playbooks</p>
+                    <h3>Know what to do when a customer stalls.</h3>
+                    <p>Visibility is only useful if your team knows what to do with it. When a risk signal fires, Clarion doesn't just flag the problem. It surfaces the recommended next action for the CS rep, based on what's worked for similar accounts in the past.</p>
+                    <p>Your team stops guessing at the right response and starts following proven playbooks that improve with every customer you onboard. The result: faster interventions, more consistent outcomes, and CS reps who spend their time on high-impact work instead of admin.</p>
+                    <div class="capability__feature">
+                        <p>AI-generated playbooks that learn from your best onboarding outcomes and recommend specific interventions per customer.</p>
+                    </div>
+                    <p class="capability__proof">Shieldlane onboarded 3x the volume without adding headcount.</p>
+                </div>
+                <div class="capability__image">
+                    <img src="https://yellowo.co.uk/wp-content/uploads/2026/07/CS-Team-Playbooks.png" alt="Clarion CS team playbooks showing recommended actions for stalled customers" style="width:100%; border-radius:12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         METRICS
+         ========================================== -->
+    <section id="customers" class="metrics">
+        <div class="container">
+            <div class="metrics__header">
+                <h2>The numbers after Clarion.</h2>
+            </div>
+            <div class="metrics__grid">
+                <div class="metric__card">
+                    <div class="metric__number">57%</div>
+                    <div class="metric__label">reduction in time-to-value</div>
+                    <div class="metric__source">Paysure: 42 days to 18</div>
+                </div>
+                <div class="metric__card">
+                    <div class="metric__number">91%</div>
+                    <div class="metric__label">onboarding completion rate</div>
+                    <div class="metric__source">Kova: up from 34%</div>
+                </div>
+                <div class="metric__card">
+                    <div class="metric__number">18%→6%</div>
+                    <div class="metric__label">first-90-day churn</div>
+                    <div class="metric__source">Stacklane: one quarter</div>
+                </div>
+                <div class="metric__card">
+                    <div class="metric__number">9 hrs</div>
+                    <div class="metric__label">per rep per week saved</div>
+                    <div class="metric__source">Ledgr</div>
+                </div>
+                <div class="metric__card">
+                    <div class="metric__number">3x</div>
+                    <div class="metric__label">volume, same headcount</div>
+                    <div class="metric__source">Shieldlane: Q1</div>
+                </div>
+            </div>
+            <p class="metrics__averages">Across all customers: 47% average improvement in time-to-first-value. 62% reduction in manual onboarding admin. 3.2x improvement in onboarding completion rates.</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         HOW IT WORKS
+         ========================================== -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="how-it-works__header">
+                <h2>Live in under two weeks.</h2>
+                <p>Most CS platforms take 3-6 months to implement. Clarion connects to your existing stack and generates the first onboarding plans within days.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <p class="step__number">Step 1</p>
+                    <h4>Connect</h4>
+                    <p>Clarion connects to your CRM (Salesforce or HubSpot) and your product analytics stack. No complex implementation. No multi-month project.</p>
+                </div>
+                <div class="step">
+                    <p class="step__number">Step 2</p>
+                    <h4>Configure</h4>
+                    <p>Define your customer segments and onboarding milestones. Clarion generates the first set of adaptive onboarding plans based on your existing customer data.</p>
+                </div>
+                <div class="step">
+                    <p class="step__number">Step 3</p>
+                    <h4>Launch</h4>
+                    <p>Your CS team starts onboarding customers through Clarion. The AI learns from each customer's behaviour and gets sharper over time. Playbooks build themselves.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         TESTIMONIALS
+         ========================================== -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonials__grid">
+                <div class="testimonial">
+                    <p class="testimonial__quote">"We were tracking onboarding in a Google Sheet with conditional formatting. We had no idea which customers were stuck until they told us. Clarion gave us visibility in the first week, and within a quarter, our first-90-day churn dropped by two-thirds."</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar"><img src="http://thetheme.io/thesaasx/wp-content/themes/thesaasx/assets/img/avatar/1.jpg" alt="Head of Customer Success, Stacklane" style="width:44px;height:44px;border-radius:50%;object-fit:cover;"></div>
+                        <div>
+                            <p class="testimonial__name">Head of Customer Success</p>
+                            <p class="testimonial__title">Stacklane</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial__quote">"The game-changer wasn't just seeing which customers were stalling. It was Clarion telling our team what to do about it. We went from improvising every intervention to following playbooks that actually worked."</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar"><img src="http://thetheme.io/thesaasx/wp-content/themes/thesaasx/assets/img/avatar/3.jpg" alt="Head of Onboarding, Shieldlane" style="width:44px;height:44px;border-radius:50%;object-fit:cover;"></div>
+                        <div>
+                            <p class="testimonial__name">Head of Onboarding</p>
+                            <p class="testimonial__title">Shieldlane</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PERSONAS
+         ========================================== -->
+    <section class="personas">
+        <div class="container">
+            <div class="personas__header">
+                <h2>Built for CS teams at scaling B2B SaaS companies.</h2>
+                <p>For companies with 50 to 500 employees, a CS team of 3 or more, and a product that requires configuration before customers see value.</p>
+            </div>
+            <div class="personas__grid">
+                <div class="persona-card">
+                    <p class="persona-card__role">For Heads of Customer Success</p>
+                    <p>Get visibility into every customer's onboarding without asking each CSM. Prove that onboarding improvements are driving retention. Scale the function without scaling headcount linearly. Stop spending 60% of your time firefighting onboarding problems and start building the CS function you were hired to build.</p>
+                </div>
+                <div class="persona-card">
+                    <p class="persona-card__role">For Heads of Onboarding</p>
+                    <p>Stop managing onboarding across Asana, Notion, and spreadsheets. One system of record. Automated alerts when customers go quiet. Different paths for different customer segments without building from scratch every time. And when something goes wrong, a recommended action instead of a guess.</p>
+                </div>
+                <div class="persona-card">
+                    <p class="persona-card__role">For Founders and CROs</p>
+                    <p>Connect onboarding quality to churn and NRR. See the impact on unit economics. Stop hiring one CSM for every 20 customers. Most B2B SaaS companies can't separate onboarding churn from product churn. Clarion gives you the data to fix the right problem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         POSITIONING
+         ========================================== -->
+    <section class="positioning">
+        <div class="container">
+            <div class="positioning__header">
+                <h2>We do one thing. We do it deeply.</h2>
+                <p>Clarion is not a full customer success platform. We don't do health scores, renewals, or expansion management. We handle the gap between "deal closed" and "customer healthy" that your CS platform doesn't cover.</p>
+            </div>
+            <div class="positioning__grid">
+                <div class="positioning__card">
+                    <p class="positioning__vs">vs. Broad CS Platforms</p>
+                    <h4>Gainsight, ChurnZero, Totango</h4>
+                    <p>They cover the full lifecycle. Onboarding is one feature among many. Implementation takes 3-6 months. Clarion does onboarding only, goes live in under two weeks, and adapts the journey per customer rather than applying a template.</p>
+                </div>
+                <div class="positioning__card">
+                    <p class="positioning__vs">vs. Onboarding Portals</p>
+                    <h4>OnRamp, Arrows</h4>
+                    <p>They organise and present the onboarding experience. But the journey itself is still template-driven. Clarion adapts the plan based on each customer's behaviour and surfaces recommended actions when things go wrong.</p>
+                </div>
+                <div class="positioning__card">
+                    <p class="positioning__vs">vs. Spreadsheets & Notion</p>
+                    <h4>The most common alternative</h4>
+                    <p>They work at 15 customers. They break at 50. You won't know the exact moment they stop working because the symptoms show up gradually. By the time it's obvious, you've already lost customers you didn't need to lose.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         INTEGRATIONS
+         ========================================== -->
+    <section class="integrations">
+        <div class="container">
+            <h2>Connects to the tools your team already uses.</h2>
+            <p>Works alongside your CRM and CS platform. Not instead of them.</p>
+            <div class="integrations__grid">
+                <div class="img-placeholder">Salesforce</div>
+                <div class="img-placeholder">HubSpot</div>
+                <div class="img-placeholder">Segment</div>
+                <div class="img-placeholder">Intercom</div>
+                <div class="img-placeholder">Slack</div>
+                <div class="img-placeholder">Zendesk</div>
+                <div class="img-placeholder">Jira</div>
+                <div class="img-placeholder">Gainsight</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         TRUST
+         ========================================== -->
+    <section class="trust">
+        <div class="container">
+            <div class="trust__inner">
+                <div class="trust__badge">
+                    <div class="trust__badge-icon">&#128274;</div>
+                    SOC 2 Type II
+                </div>
+                <div class="trust__badge">
+                    <div class="trust__badge-icon">&#127466;&#127482;</div>
+                    GDPR Compliant
+                </div>
+                <div class="trust__badge">
+                    <div class="trust__badge-icon">&#9729;&#65039;</div>
+                    AWS EU-West
+                </div>
+                <div class="trust__badge">
+                    <div class="trust__badge-icon">&#128273;</div>
+                    SSO (SAML 2.0 / OIDC)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FINAL CTA
+         ========================================== -->
+    <section id="demo" class="final-cta">
+        <div class="container">
+            <h2>Your customers deserve better than a spreadsheet.</h2>
+            <p>See how Clarion adapts onboarding to every customer. Book a 15-minute demo with the team.</p>
+            <a href="#" class="btn btn--white">Book a Demo</a>
+            <p class="final-cta__note">No commitment. No 45-minute sales pitch. Just a quick look at how it works.</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__logo"><img src="https://outbound-playbook-lovat.vercel.app/clarion-logo.png" alt="Clarion"></div>
+                <ul class="footer__links">
+                    <li><a href="#">Product</a></li>
+                    <li><a href="#">Customers</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Security</a></li>
+                </ul>
+            </div>
+            <div class="footer__meta">
+                <p>hello@clarion.io &middot; London, UK &middot; SOC 2 Type II &middot; GDPR Compliant &middot; &copy; 2026 Clarion. All rights reserved.</p>
+                <p style="margin-top: 8px;">UI/UX designs by <a href="https://dribbble.com/stasio" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.65); text-decoration: underline; text-underline-offset: 2px;">Stas Ostapenko</a></p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
